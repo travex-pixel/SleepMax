@@ -55,6 +55,8 @@ export function HomeScreen() {
   return (
     <Screen
       center
+      horizon="fixed"
+      lead={<Wordmark />}
       aside={
         <Link
           href="/settings"
@@ -76,7 +78,6 @@ export function HomeScreen() {
       }
     >
       <div className="flex flex-col gap-10 pb-10">
-        <Wordmark />
         <h1 className="voice text-[2rem] leading-[1.2] text-ink sm:text-[2.25rem]">
           Nothing else needs you right now.
         </h1>

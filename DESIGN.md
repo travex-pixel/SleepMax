@@ -8,9 +8,9 @@ Someone lying down in a dark room, phone at low brightness, one thumb. Everythin
 
 One horizontal line of last light, with the ground darker beneath it. It is the only recurring visual element.
 
-- On the opening screen it is the composition: it separates the sentence from the actions.
-- On task screens it keeps out of the content and lives in the footer zone, so the primary action stands on the ground.
-- Through a session it sinks and dims (home 58% → choose 80% → unwind 82% → drift 74% with a quarter of the glow). Last light leaving the room.
+- On the opening screen it is the composition: it separates the sentence from the actions (58% of the viewport).
+- On task screens the `Screen` component measures its sticky footer and places the line at the footer's top edge, so the primary action always stands on the ground and the line never cuts through content. Screens without a footer put it near the bottom (96%).
+- Through a session it dims (glow: home 100% → choose 85% → unload 75% → unwind 60% → drift 40%) and on Drift sits at 74%, above the control cluster. Dim sinks it out of sight (98.5%, 15% glow) while the veil does the brightness. Last light leaving the room.
 - Its position and glow are CSS custom properties (`--horizon`, `--horizon-alpha`) set from `src/lib/atmosphere.ts`; the transitions take 2.6 seconds and go to zero under reduced motion.
 
 A faint static grain sits over the ground so the dark reads as material rather than flat pixels.
@@ -27,7 +27,7 @@ Strategy: restrained. Neutrals tinted from the ground hue, one accent.
 | `ground-raise` | `oklch(0.19 0.03 268)` | Hover fills, disabled controls |
 | `ink` | `oklch(0.93 0.018 85)` | Primary text (warm ivory) |
 | `ink-2` | `oklch(0.74 0.022 80)` | Secondary text |
-| `ink-3` | `oklch(0.56 0.028 272)` | Tertiary text, placeholders |
+| `ink-3` | `oklch(0.6 0.028 272)` | Tertiary text, placeholders (≈5:1 on ground) |
 | `ink-4` | `oklch(0.4 0.03 272)` | Disabled glyphs |
 | `lamp` | `oklch(0.8 0.1 78)` | The accent: primary action, horizon, selection marks |
 | `lamp-deep` | `oklch(0.62 0.11 70)` | "For tomorrow" label |
@@ -47,9 +47,9 @@ Secondary text is never gray: it is tinted from the ground hue or the ivory. Bod
 ## Layout
 
 - Phone first. A single column, max 30rem, 20px side padding, safe-area insets.
-- Primary actions are bottom-anchored, 56px tall, full width.
+- Primary actions are bottom-anchored, 56px tall, full width, in a sticky footer that content scrolls under (a short ground-to-transparent mask, never a raised surface).
 - No cards. Lists are rows divided by hairlines; the text is the control.
-- Headers are 56px: back chevron left, small tracked title centre, one optional action right.
+- Headers are 56px: back chevron (or the wordmark on home) left, one optional action right. A small tracked title in the centre only where the screen has no headline (Unwind, Settings); a tired reader never meets two titles.
 
 ## Components
 
@@ -57,12 +57,12 @@ Secondary text is never gray: it is tinted from the ground hue or the ivory. Bod
 - **ChoiceList**: rows with a trailing chevron when they navigate, a lamp dot when they select.
 - **Segmented**: text options with a lamp underline on the current one. Radiogroup semantics, arrow keys.
 - **ToggleRow**: label, note, and a switch outlined in lamp when on.
-- **Range**: hairline track, ivory thumb, themed in both engines.
+- **Range**: hairline track, 18px `ink-3` thumb with no shadow, themed in both engines. Quiet by design: on Drift it must not be the brightest thing on screen.
 - **Sheet** (Drift only): slides up from the bottom for sound and timer. Scrim closes it.
 
 ## Motion
 
-- Screens fade in over 350ms. No page-load choreography.
+- No entrance animation on screens: the product loads into the task. The horizon's 2.6s sink is the one authored moment between steps.
 - Wind-down lines crossfade over 1.1s with a 4px rise; quiet beats fade slower.
 - Drift: the sentence fades out over 4s after 24s; controls settle to 38% opacity after 40s idle and return on any touch.
 - The horizon moves over 2.6s with a gentle ease.

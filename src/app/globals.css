@@ -17,7 +17,7 @@
 
   --color-ink: oklch(0.93 0.018 85);
   --color-ink-2: oklch(0.74 0.022 80);
-  --color-ink-3: oklch(0.56 0.028 272);
+  --color-ink-3: oklch(0.6 0.028 272);
   --color-ink-4: oklch(0.4 0.03 272);
 
   --color-lamp: oklch(0.8 0.1 78);
@@ -232,21 +232,19 @@ input[type="range"].slider::-moz-range-track {
 input[type="range"].slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 22px;
-  height: 22px;
-  margin-top: -10px;
+  width: 18px;
+  height: 18px;
+  margin-top: -8px;
   border-radius: 50%;
-  background: var(--color-ink);
+  background: var(--color-ink-3);
   border: 1px solid var(--color-line-strong);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.4);
 }
 input[type="range"].slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  background: var(--color-ink);
+  background: var(--color-ink-3);
   border: 1px solid var(--color-line-strong);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.4);
 }
 input[type="range"].slider:focus-visible {
   outline: none;
@@ -254,6 +252,11 @@ input[type="range"].slider:focus-visible {
 input[type="range"].slider:focus-visible::-webkit-slider-thumb {
   outline: 2px solid var(--color-lamp);
   outline-offset: 3px;
+}
+
+/* Sticky footer: the ground below the horizon, fading in so rows scroll under it. */
+.screen-footer {
+  background: linear-gradient(to bottom, transparent, var(--color-ground-deep) 2rem);
 }
 
 @media (prefers-reduced-motion: reduce) {

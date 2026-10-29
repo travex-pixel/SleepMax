@@ -34,7 +34,6 @@ export function UnloadScreen() {
   return (
     <Screen
       back="/tonight/choose"
-      title="Put it down"
       footer={
         <div className="flex flex-col gap-3">
           <Button variant={hasSome ? "primary" : "secondary"} size="lg" onClick={next}>

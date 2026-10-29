@@ -137,6 +137,7 @@ export function UnwindScreen() {
   if (phase === "ready") {
     return (
       <Screen
+        center
         back={path.skipUnload ? "/tonight/choose" : "/tonight/unload"}
         title="Wind down"
         footer={
@@ -150,7 +151,7 @@ export function UnwindScreen() {
           </div>
         }
       >
-        <div className="flex flex-col gap-10 pt-4">
+        <div className="flex flex-col gap-10 pb-10">
           <h1 className="voice text-[1.625rem] leading-[1.25]">{path.opening}</h1>
           <div className="flex flex-col gap-3">
             <Segmented<SessionLength>

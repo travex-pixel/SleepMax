@@ -29,7 +29,7 @@ export function ThoughtsScreen() {
   };
 
   return (
-    <Screen back="/" title="Parked">
+    <Screen back="/">
       <div className="flex flex-col gap-8 pt-4">
         <div className="flex flex-col gap-2">
           <h1 className="voice text-[1.625rem] leading-[1.25]">Things you’ve put down.</h1>

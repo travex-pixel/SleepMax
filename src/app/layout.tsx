@@ -18,7 +18,6 @@ const voice = Literata({
   variable: "--font-voice",
   display: "swap",
   axes: ["opsz"],
-  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {

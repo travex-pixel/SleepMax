@@ -62,9 +62,10 @@ export function Drift({ standalone = false }: DriftProps) {
     latest.current = { preset, volume, timerMinutes, step: session.step };
   });
 
-  // Atmosphere: sink the horizon, then let the dim veil follow the toggle.
+  // Atmosphere: sink the horizon. Dim adds the veil and lets the last light go.
   useEffect(() => {
-    setAtmosphere({ ...atmospheres.drift, veil: dim ? Math.min(0.75, prefs.dim) : 0 });
+    if (dim) setAtmosphere({ ...atmospheres.dim, veil: Math.min(0.75, prefs.dim) });
+    else setAtmosphere({ ...atmospheres.drift });
   }, [dim, prefs.dim]);
   useEffect(() => () => setAtmosphere({ veil: 0 }), []);
 
@@ -159,13 +160,13 @@ export function Drift({ standalone = false }: DriftProps) {
   const needsTap = snapshot.needsGesture;
 
   return (
-    <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="mx-auto flex w-full max-w-[30rem] flex-1 flex-col px-5"
-    >
-      <header className="flex h-14 shrink-0 items-center justify-between">
+    <main className="mx-auto flex w-full max-w-[30rem] flex-1 flex-col px-5">
+      {/* While the sheet is open its own close is the only one on screen. */}
+      <header
+        className="flex h-14 shrink-0 items-center justify-between transition-opacity duration-300"
+        inert={sheet}
+        style={{ opacity: sheet ? 0 : 1 }}
+      >
         <Wordmark />
         <button
           type="button"
@@ -298,7 +299,7 @@ export function Drift({ standalone = false }: DriftProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[5] bg-black/40"
+              className="fixed inset-0 z-[5] bg-black/60"
             />
             <motion.div
               key="sheet"
@@ -335,6 +336,6 @@ export function Drift({ standalone = false }: DriftProps) {
           </>
         ) : null}
       </AnimatePresence>
-    </motion.main>
+    </main>
   );
 }

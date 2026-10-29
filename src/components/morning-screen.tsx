@@ -82,7 +82,6 @@ export function MorningScreen() {
   return (
     <Screen
       back="/"
-      title="Morning"
       footer={
         !done ? (
           <Button variant="primary" size="lg" onClick={save}>

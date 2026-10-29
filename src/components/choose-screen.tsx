@@ -39,7 +39,6 @@ export function ChooseScreen() {
     <Screen
       back="/"
       backLabel="Back to start"
-      title="Tonight"
       footer={
         <Button variant="ghost" size="lg" onClick={skip}>
           Skip this
