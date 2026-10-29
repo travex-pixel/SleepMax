@@ -250,10 +250,7 @@ export class AmbientEngine {
       this.emit();
       return;
     }
-    const t = this.ctx.currentTime;
-    this.master.gain.cancelScheduledValues(t);
-    this.master.gain.setValueAtTime(this.master.gain.value, t);
-    this.master.gain.linearRampToValueAtTime(0, t + seconds);
+    this.rampToSilence(seconds);
     this.clearFade();
     this.fadeTimeout = window.setTimeout(() => {
       this.ctx?.suspend().catch(() => undefined);
@@ -263,9 +260,24 @@ export class AmbientEngine {
     this.emit();
   }
 
-  /** Long fade used by the sleep timer. */
+  /**
+   * Long fade used by the sleep timer. Playback intent stays true while the
+   * sound is still audible, so the controls keep saying "playing" until it
+   * has actually gone; then it stops like a normal stop.
+   */
   fadeOut(seconds: number) {
-    this.stop(seconds);
+    if (!this.ctx || !this.master || !this.wantPlaying) return;
+    this.rampToSilence(seconds);
+    this.clearFade();
+    this.fadeTimeout = window.setTimeout(() => this.stop(0.05), seconds * 1000);
+  }
+
+  private rampToSilence(seconds: number) {
+    if (!this.ctx || !this.master) return;
+    const t = this.ctx.currentTime;
+    this.master.gain.cancelScheduledValues(t);
+    this.master.gain.setValueAtTime(this.master.gain.value, t);
+    this.master.gain.linearRampToValueAtTime(0, t + Math.max(0.05, seconds));
   }
 
   private clearFade() {

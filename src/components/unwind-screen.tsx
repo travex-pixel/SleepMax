@@ -37,6 +37,7 @@ export function UnwindScreen() {
   const [elapsed, setElapsed] = useState(0); // seconds within the whole sequence
   const startRef = useRef<number>(0); // wall clock at (re)start
   const baseRef = useRef<number>(0); // elapsed at (re)start
+  const lastBeat = useRef<number>(-1); // last beat index recorded to the session
 
   useEffect(() => {
     setAtmosphere(atmospheres.unwind);
@@ -76,10 +77,11 @@ export function UnwindScreen() {
       }
       let i = 0;
       for (let k = 0; k < starts.length; k++) if ((starts[k] ?? 0) <= e) i = k;
-      setIndex((prev) => {
-        if (prev !== i) dispatch({ type: "BEAT", index: i });
-        return i;
-      });
+      if (i !== lastBeat.current) {
+        lastBeat.current = i;
+        dispatch({ type: "BEAT", index: i });
+        setIndex(i);
+      }
     };
     tick();
     const id = window.setInterval(tick, 250);
@@ -94,6 +96,7 @@ export function UnwindScreen() {
     const resumeFrom = session.length === length && session.beatIndex > 0 ? (starts[session.beatIndex] ?? 0) : 0;
     baseRef.current = resumeFrom;
     startRef.current = Date.now();
+    lastBeat.current = -1;
     setElapsed(resumeFrom);
     setPhase("running");
   };
@@ -116,6 +119,8 @@ export function UnwindScreen() {
     }
     baseRef.current = nextStart;
     startRef.current = Date.now();
+    lastBeat.current = index + 1;
+    dispatch({ type: "BEAT", index: index + 1 });
     setElapsed(nextStart);
     setIndex(index + 1);
   };

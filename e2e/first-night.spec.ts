@@ -119,6 +119,9 @@ test("drift controls work: timer, sound, dim, and end", async ({ page }) => {
   await page.getByRole("button", { name: "Just play something calming" }).click();
   await expect(page).toHaveURL(/\/sounds/);
   await expect(page.getByText("30 min")).toBeVisible();
+  // The tap on the home screen unlocked audio, so the sound is actually
+  // playing (the AudioContext reached "running" and the engine reports it).
+  await expect(page.getByRole("button", { name: "Pause sound" })).toBeVisible({ timeout: 8000 });
 
   await page.getByRole("button", { name: "Soft rain" }).click();
   const dialog = page.getByRole("dialog", { name: "Sound and timer" });
